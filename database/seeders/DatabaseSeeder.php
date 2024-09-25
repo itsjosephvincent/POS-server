@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,12 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        Role::factory()->create([
+            'role' => 'Owner',
+        ]);
+        Role::factory()->create([
+            'role' => 'Manager',
+        ]);
+        Role::factory()->create([
+            'role' => 'Staff',
+        ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@test.com',
-            'password' => bcrypt(value: '123456'),
+            'role_id' => 1,
+            'email' => 'owner@test.com',
+            'password' => Hash::make('123456'),
+            'firstname' => 'John',
+            'lastname' => 'Doe',
         ]);
+
+        
     }
 }
