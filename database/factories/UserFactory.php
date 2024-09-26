@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,7 +25,6 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'role_id' => 1,
             'username' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
             'name' => fake()->name,
@@ -40,5 +40,15 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_active' => 1,
+            ])
+            ->afterCreating(function (User $user) {
+                $user->assignRole('Admin');
+            });
     }
 }

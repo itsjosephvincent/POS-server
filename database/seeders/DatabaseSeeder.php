@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,18 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::factory()->create([
-            'role' => 'Owner',
-        ]);
-        Role::factory()->create([
-            'role' => 'Manager',
-        ]);
-        Role::factory()->create([
-            'role' => 'Staff',
-        ]);
 
-        User::factory()->create([
-            'role_id' => 1,
+        Role::create(['name' => 'Admin']);
+        Role::create(['name' => 'Branch']);
+        Role::create(['name' => 'Cashier']);
+        
+        User::factory()->active()->create([
             'username' => 'owner1',
             'password' => Hash::make('123456'),
             'name' => 'John Doe',
