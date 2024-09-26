@@ -28,9 +28,9 @@ class UserService
         return new UserResource($this->repository->show($id));
     }
 
-    public function showByEmail(string $email)
+    public function showByUsername(string $username)
     {
-        return new UserResource($this->repository->showByEmail($email));
+        return new UserResource($this->repository->showByUsername($username));
     }
 
     public function update(object $payload, int $id)

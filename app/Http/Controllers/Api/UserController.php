@@ -18,20 +18,20 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
-        $user = $this->service->showByEmail($request->email);
+        $user = $this->service->showByUsername($request->username);
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'username' => ['The provided credentials are incorrect.'],
             ]);
         }
 
         return response()->json([
             'data' => [
-                'token'=>$user->createToken($request->email)->plainTextToken
+                'token'=>$user->createToken($request->userAgent())->plainTextToken
             ]
         ]);
     }

@@ -17,10 +17,9 @@ class UserRepository implements UserRepositoryInterface
     {
         $user = new User();
         $user->role_id = $payload->role_id;
-        $user->email = $payload->email;
+        $user->username = $payload->username;
         $user->password = Hash::make($payload->password);
-        $user->firstname = $payload->firstname;
-        $user->lastname = $payload->lastname;
+        $user->name = $payload->name;
         $user->save();
 
         return $user->fresh();
@@ -31,18 +30,17 @@ class UserRepository implements UserRepositoryInterface
         return User::findOrFail($id);
     }
 
-    public function showByEmail(string $email)
+    public function showByUsername(string $username)
     {
-        return User::where('email', $email)->first();
+        return User::where('username', $username)->first();
     }
 
     public function update(object $payload, int $id)
     {
         $user = User::findOrFail($id);
         $user->role_id = $payload->role_id;
-        $user->email = $payload->email;
-        $user->firstname = $payload->firstname;
-        $user->lastname = $payload->lastname;
+        $user->username = $payload->username;
+        $user->name = $payload->name;
         $user->save();
 
         return $user->fresh();
