@@ -23,7 +23,17 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
-        return $this->service->save($request);
+        try{
+            $data = $this->service->save($request);
+            return $data;
+        }
+        catch (\Exception $error)
+        {
+            return response()->json([
+                'error' => 'Error saving data.'
+            ], 500);
+        }
+
     }
 
     public function show(Request $request)

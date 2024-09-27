@@ -16,16 +16,22 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+        Role::create(['name' => 'SuperAdmin']);
         Role::create(['name' => 'Admin']);
         Role::create(['name' => 'Branch']);
         Role::create(['name' => 'Cashier']);
-        
-        User::factory()->active()->create([
+
+        User::factory()->super_admin()->create([
+            'username' => 'superadmin',
+            'password' => Hash::make('admin'),
+            'name' => 'Super Admin',
+        ]);
+        User::factory()->admin()->create([
             'username' => 'owner1',
             'password' => Hash::make('123456'),
             'name' => 'John Doe',
         ]);
 
-        
+
     }
 }

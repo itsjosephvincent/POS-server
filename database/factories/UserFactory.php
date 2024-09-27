@@ -42,13 +42,17 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function active(): static
+    public function super_admin(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'is_active' => 1,
-            ])
-            ->afterCreating(function (User $user) {
-                $user->assignRole('Admin');
-            });
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('SuperAdmin');
+        });
+    }
+
+    public function admin(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('Admin');
+        });
     }
 }
