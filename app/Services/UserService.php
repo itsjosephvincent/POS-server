@@ -40,6 +40,6 @@ class UserService
 
     public function delete(int $id)
     {
-        return new UserResource($this->repository->delete($id));
+        return $this->repository->delete($id);
     }
 }

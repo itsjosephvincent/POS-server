@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use \Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -36,6 +37,11 @@ class UserController extends Controller
         ]);
     }
 
+    public function current_user(Request $request)
+    {
+        return $this->service->show($request->user()->id);
+    }
+
     public function index()
     {
         return $this->service->index();
@@ -52,4 +58,9 @@ class UserController extends Controller
 
     }
 
+    public function destroy(int $id)
+    {
+        $status = $this->service->delete($id) ? 204 : 404;
+        return response()->json([], $status);
+    }
 }

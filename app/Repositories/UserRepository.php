@@ -47,6 +47,15 @@ class UserRepository implements UserRepositoryInterface
     }
 
     public function delete(int $id){
-        return User::findOrFail($id)->delete();
+        try
+        {
+            $user = User::findOrFail($id);
+            $user->delete();
+            return true;
+        }
+        catch(\Illuminate\Database\Eloquent\ModelNotFoundException $exception)
+        {
+            return false;
+        }
     }
 }
