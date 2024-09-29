@@ -12,7 +12,8 @@ class AdminRepository implements AdminRepositoryInterface
 {
     public function index()
     {
-        return User::role('Admin')->get();
+        // echo json_encode(Admin::with('user')->get());
+        return Admin::with('user')->paginate(5);
     }
     public function save(object $data)
     {

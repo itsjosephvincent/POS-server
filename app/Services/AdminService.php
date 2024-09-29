@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Services;
+
+use App\Http\Resources\AdminCollection;
+use App\Http\Resources\AdminResource;
 use App\Interfaces\Repositories\AdminRepositoryInterface;
 use App\Http\Resources\UserResource;
 
@@ -15,7 +18,7 @@ class AdminService
 
     public function index()
     {
-        return UserResource::collection($this->repository->index());
+        return AdminResource::collection($this->repository->index())->resource;
     }
 
     public function save(object $data)

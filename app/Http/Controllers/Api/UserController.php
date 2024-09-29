@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use \Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -16,23 +15,26 @@ class UserController extends Controller
         protected UserService $service,
     ) {}
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
         $user = $this->service->showByUsername($request->username);
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'username' => ['The provided credentials are incorrect.'],
-            ]);
+        if (!$user) {
+            return response()->json([
+                'data' => [
+                    'message' => 'Username not found.'
+                ]
+            ], 401);
         }
-
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'data' => [
+                    'message' => 'Wrong password.'
+                ]
+            ], 401);
+        }
         return response()->json([
             'data' => [
-                'token'=>$user->createToken($request->userAgent())->plainTextToken
+                'token' => $user->createToken($request->userAgent())->plainTextToken
             ]
         ]);
     }
@@ -53,10 +55,7 @@ class UserController extends Controller
     }
 
     // @TODO - Check out laravel Validation - Form Requests
-    public function update(Request $user)
-    {
-
-    }
+    public function update(Request $user) {}
 
     public function destroy(int $id)
     {

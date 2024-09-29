@@ -18,7 +18,11 @@ class AdminController extends Controller
 
     public function index()
     {
-        return $this->service->index();
+        return response()->json([
+            'data' => [
+                'admins' => $this->service->index(),
+            ]
+        ]);
     }
 
     public function store(Request $request)

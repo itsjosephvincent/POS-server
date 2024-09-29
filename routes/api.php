@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/admins', [AdminController::class, 'index']); // for superadmin
+Route::get('/admins', [AdminController::class, 'index'])->middleware(['auth:sanctum', 'role:SuperAdmin']); // for superadmin
 Route::post('/registration', [AdminController::class, 'store']); // Register an account
 Route::get('/admin', [AdminController::class, 'show'])->middleware(['auth:sanctum']);
 

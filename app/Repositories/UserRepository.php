@@ -32,7 +32,11 @@ class UserRepository implements UserRepositoryInterface
 
     public function showByUsername(string $username)
     {
-        return User::where('username', $username)->first();
+        try {
+            return User::where('username', $username)->firstOrFail();
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
     public function update(object $payload, int $id)
@@ -46,15 +50,13 @@ class UserRepository implements UserRepositoryInterface
         return $user->fresh();
     }
 
-    public function delete(int $id){
-        try
-        {
+    public function delete(int $id)
+    {
+        try {
             $user = User::findOrFail($id);
             $user->delete();
             return true;
-        }
-        catch(\Illuminate\Database\Eloquent\ModelNotFoundException $exception)
-        {
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $exception) {
             return false;
         }
     }

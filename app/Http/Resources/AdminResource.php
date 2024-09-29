@@ -20,7 +20,8 @@ class AdminResource extends JsonResource
             'username' => $this->user->username,
             'name' => $this->user->name,
             'business_name' => $this->business_name,
-            'role' => $this->user->getRoleNames(),
+            'role' => $this->user->getRoleNames()[0],
+            'enabled' => $this->enabled,
         ];
     }
 }

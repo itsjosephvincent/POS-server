@@ -30,7 +30,10 @@ class UserService
 
     public function showByUsername(string $username)
     {
-        return new UserResource($this->repository->showByUsername($username));
+        $user = $this->repository->showByUsername($username);
+        if (!$user)
+            return false;
+        return new UserResource($user);
     }
 
     public function update(object $payload, int $id)
