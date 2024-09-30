@@ -28,7 +28,7 @@ class StoreService implements StoreServiceInterface
     public function findStores(object $payload)
     {
         $sortField = $this->sortField($payload, 'id');
-        $sortOrder = $this->sortOrder($payload, 'ascend');
+        $sortOrder = $this->sortOrder($payload, 'asc');
 
         $stores = $this->storeRepository->findMany($payload, $sortField, $sortOrder);
 

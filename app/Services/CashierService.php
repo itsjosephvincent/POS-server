@@ -28,7 +28,7 @@ class CashierService implements CashierServiceInterface
     public function findCashiers(object $payload)
     {
         $sortField = $this->sortField($payload, 'id');
-        $sortOrder = $this->sortOrder($payload, 'ascend');
+        $sortOrder = $this->sortOrder($payload, 'asc');
 
         $cashiers = $this->cashierRepository->findMany($payload, $sortField, $sortOrder);
 

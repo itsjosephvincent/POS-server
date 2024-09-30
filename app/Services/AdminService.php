@@ -21,7 +21,7 @@ class AdminService implements AdminServiceInterface
     public function findAdmins(object $payload)
     {
         $sortField = $this->sortField($payload, 'id');
-        $sortOrder = $this->sortOrder($payload, 'ascend');
+        $sortOrder = $this->sortOrder($payload, 'asc');
 
         $admins = $this->adminRepository->findMany($payload, $sortField, $sortOrder);
 
