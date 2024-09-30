@@ -37,6 +37,8 @@ class StoreRepository implements StoreRepositoryInterface
         $store->password = Hash::make($payload->password);
         $store->save();
 
+        $store->assignRole('store');
+
         return $store->fresh();
     }
 

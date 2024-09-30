@@ -35,6 +35,8 @@ class AdminRepository implements AdminRepositoryInterface
         $admin->password = Hash::make($payload->password);
         $admin->save();
 
+        $admin->assignRole('admin');
+
         return $admin->fresh();
     }
 

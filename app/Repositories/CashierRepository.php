@@ -35,6 +35,8 @@ class CashierRepository implements CashierRepositoryInterface
         $cashier->password = $payload->password;
         $cashier->save();
 
+        $cashier->assignRole('cashier');
+
         return $cashier->fresh();
     }
 
