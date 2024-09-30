@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
 
 return new class extends Migration
 {
@@ -12,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('super_admins', function (Blueprint $table) {
+        Schema::create('cashiers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->unique();
+            $table->uuid();
+            $table->unsignedBigInteger('store_id');
+            $table->string('name');
+            $table->string('username')->unique();
+            $table->string('password');
             $table->timestamps();
+
+            $table->foreign('store_id')->references('id')->on('stores')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('super_admins');
+        Schema::dropIfExists('cashiers');
     }
 };
