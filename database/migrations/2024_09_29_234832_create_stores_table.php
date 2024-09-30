@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('branch')->nullable();
             $table->string('username')->unique();
             $table->string('password');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('admin_id')->references('id')->on('admins')->cascadeOnUpdate()->cascadeOnDelete();

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('username')->unique();
             $table->string('password');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
