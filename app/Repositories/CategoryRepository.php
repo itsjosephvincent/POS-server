@@ -13,13 +13,22 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $user = Auth::user();
 
-        return Category::where('admin_id', $user->id)
+        return Category::with([
+            'admin',
+            'products',
+        ])
+            ->where('admin_id', $user->id)
             ->get();
     }
 
     public function findByUuid(string $uuid)
     {
-        return Category::where('uuid', $uuid)->first();
+        return Category::with([
+            'admin',
+            'products',
+        ])
+            ->where('uuid', $uuid)
+            ->first();
     }
 
     public function create(object $payload)
