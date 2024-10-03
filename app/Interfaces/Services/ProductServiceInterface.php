@@ -13,4 +13,6 @@ interface ProductServiceInterface
     public function updateProduct(object $payload, string $uuid);
 
     public function deleteProduct(string $uuid);
+
+    public function importProduct(object $payload);
 }

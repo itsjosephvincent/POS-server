@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductImportRequest;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Interfaces\Services\ProductServiceInterface;
@@ -40,5 +41,10 @@ class ProductController extends Controller
     public function destroy(string $uuid)
     {
         return $this->productService->deleteProduct($uuid);
+    }
+
+    public function import(ProductImportRequest $request)
+    {
+        return $this->productService->importProduct($request);
     }
 }

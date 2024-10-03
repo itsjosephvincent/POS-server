@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Http\Resources\ProductResource;
+use App\Imports\ProductsImport;
 use App\Interfaces\Repositories\CategoryRepositoryInterface;
 use App\Interfaces\Repositories\ProductRepositoryInterface;
 use App\Interfaces\Repositories\SpatieRepositoryInterface;
 use App\Interfaces\Services\ProductServiceInterface;
 use App\Traits\SortingTraits;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductService implements ProductServiceInterface
 {
@@ -89,5 +91,10 @@ class ProductService implements ProductServiceInterface
     public function deleteProduct(string $uuid)
     {
         return $this->productRepository->delete($uuid);
+    }
+
+    public function importProduct(object $payload)
+    {
+        return Excel::import(new ProductsImport, $payload->file);
     }
 }
