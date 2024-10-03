@@ -16,7 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     Route::prefix('products')->group(function () {
-        Route::post('/import/products', [ProductController::class, 'import']);
+        Route::post('/import/file', [ProductController::class, 'import']);
     });
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
