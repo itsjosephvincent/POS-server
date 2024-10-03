@@ -2,15 +2,18 @@
 
 namespace App\Imports;
 
+use App\Exceptions\InvalidCategoryException;
 use App\Models\Category;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToCollection
+class ProductsImport implements ToCollection, WithHeadingRow
 {
     /**
      * @param  Collection  $collection
@@ -28,10 +31,7 @@ class ProductsImport implements ToCollection
 
                 if (! $category) {
                     DB::rollBack();
-
-                    return response()->json([
-                        'message' => trans('exception.invalid_category.message'),
-                    ], Response::HTTP_BAD_REQUEST);
+                    throw new InvalidCategoryException(trans('exception.invalid_category.message'), Response::HTTP_BAD_REQUEST);
                 }
 
                 $product = new Product;
@@ -44,16 +44,10 @@ class ProductsImport implements ToCollection
             }
 
             DB::commit();
-
-            return response()->json([
-                'message' => trans('exception.success.message'),
-            ], Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'message' => trans('exception.transaction_failed.message'),
-            ], Response::HTTP_BAD_REQUEST);
+            throw $e;
         }
     }
 }

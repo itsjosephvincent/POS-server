@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidCategoryException;
 use App\Http\Resources\ProductResource;
 use App\Imports\ProductsImport;
 use App\Interfaces\Repositories\CategoryRepositoryInterface;
@@ -9,6 +10,8 @@ use App\Interfaces\Repositories\ProductRepositoryInterface;
 use App\Interfaces\Repositories\SpatieRepositoryInterface;
 use App\Interfaces\Services\ProductServiceInterface;
 use App\Traits\SortingTraits;
+use Exception;
+use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductService implements ProductServiceInterface
@@ -95,6 +98,20 @@ class ProductService implements ProductServiceInterface
 
     public function importProduct(object $payload)
     {
-        return Excel::import(new ProductsImport, $payload->file);
+        try {
+            Excel::import(new ProductsImport, $payload->file);
+
+            return response()->json([
+                'message' => trans('exception.success.message'),
+            ], Response::HTTP_OK);
+        } catch (InvalidCategoryException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => trans('exception.transaction_failed.message'),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }
