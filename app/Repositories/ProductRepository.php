@@ -26,7 +26,7 @@ class ProductRepository implements ProductRepositoryInterface
         $product = new Product;
         $product->category_id = $payload->category_id;
         $product->name = $payload->name;
-        $product->image_url = $payload->image_url ?? null;
+        $product->image = $payload->image ?? null;
         $product->cost = $payload->cost;
         $product->price = $payload->price;
         $product->inventory = $payload->inventory;
@@ -39,7 +39,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $product = Product::where('uuid', $uuid)->first();
         $product->name = $payload->name;
-        $product->image_url = $payload->image_url ?? null;
+        $product->image = $payload->image ?? null;
         $product->cost = $payload->cost;
         $product->price = $payload->price;
         $product->inventory = $payload->inventory;
