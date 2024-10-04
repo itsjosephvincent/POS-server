@@ -25,8 +25,8 @@ class ProductStoreRequest extends FormRequest
             'category_uuid' => ['required', 'uuid'],
             'name' => 'required',
             'image_url' => ['sometimes', 'max:10240'],
-            'cost' => ['required', 'decimal:1,999999.99'],
-            'price' => ['required', 'decimal:1,999999.99'],
+            'cost' => ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
+            'price' => ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'inventory' => ['required', 'integer'],
         ];
     }
