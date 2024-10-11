@@ -24,6 +24,7 @@ class StoreResource extends JsonResource
             'created_at' => $this->created_at,
             'admin' => new AdminResource($this->whenLoaded('admin')),
             'cashiers' => CashierResource::collection($this->whenLoaded('cashiers')),
+            'is_active' => $this->is_active,
         ];
     }
 }

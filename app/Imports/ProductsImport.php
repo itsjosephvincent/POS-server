@@ -28,7 +28,6 @@ class ProductsImport implements ToCollection, WithHeadingRow
                 $category = Category::where('admin_id', $user->id)
                     ->where('name', $row['category'])
                     ->first();
-
                 if (! $category) {
                     DB::rollBack();
                     throw new InvalidCategoryException(trans('exception.invalid_category.message'), Response::HTTP_BAD_REQUEST);
@@ -40,13 +39,15 @@ class ProductsImport implements ToCollection, WithHeadingRow
                 $product->cost = $row['cost'];
                 $product->price = $row['price'];
                 $product->inventory = $row['inventory'];
+                if ($row['image']) {
+                    $product->image = $row['image'];
+                }
                 $product->save();
             }
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-
             throw $e;
         }
     }

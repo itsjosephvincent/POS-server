@@ -22,6 +22,7 @@ class AdminResource extends JsonResource
             'username' => $this->username,
             'created_at' => $this->created_at,
             'stores' => StoreResource::collection($this->whenLoaded('stores')),
+            'is_active' => $this->is_active,
         ];
     }
 }

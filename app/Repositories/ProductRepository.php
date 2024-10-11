@@ -10,9 +10,10 @@ class ProductRepository implements ProductRepositoryInterface
 {
     public function findMany(object $payload, string $sortField, string $sortOrder)
     {
-        return Product::filter($payload->all())
+        return Product::with('category')->filter($payload->all())
             ->orderBy($sortField, $sortOrder)
-            ->paginate(config('paginate.page'));
+            ->paginate(config('paginate.page'))
+            ;
     }
 
     public function findByUuid(string $uuid)

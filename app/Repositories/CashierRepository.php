@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\Repositories\CashierRepositoryInterface;
 use App\Models\Cashier;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class CashierRepository implements CashierRepositoryInterface
 {
@@ -32,7 +33,7 @@ class CashierRepository implements CashierRepositoryInterface
         $cashier->store_id = $payload->store_id;
         $cashier->name = $payload->name;
         $cashier->username = $payload->username;
-        $cashier->password = $payload->password;
+        $cashier->password = Hash::make($payload->password);
         $cashier->save();
 
         $cashier->assignRole('cashier');
@@ -46,7 +47,7 @@ class CashierRepository implements CashierRepositoryInterface
         $cashier->name = $payload->name;
         $cashier->username = $payload->username;
         if ($payload->password) {
-            $cashier->password = $payload->password;
+            $cashier->password = Hash::make($payload->password);
         }
         $cashier->is_active = $payload->is_active;
         $cashier->save();

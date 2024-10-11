@@ -18,7 +18,7 @@ class CashierStoreRequest extends FormRequest
             'store_uuid' => 'required',
             'name' => 'required',
             'username' => ['required', Rule::unique('cashiers')],
-            'password' => 'requssired',
+            'password' => 'required',
         ];
     }
 }
