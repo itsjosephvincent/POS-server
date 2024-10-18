@@ -4,7 +4,7 @@ namespace App\Http\Requests\Cashier;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RunningBillVoidRequest extends FormRequest
+class CartStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,9 @@ class RunningBillVoidRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required',
+            'cashier_uuid' => 'required',
+            'product_uuid' => 'required',
+            'quantity' => ['required', 'numeric'],
         ];
     }
 }

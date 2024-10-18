@@ -23,7 +23,6 @@ class OrderStoreRequest extends FormRequest
     {
         return [
             'table_uuid' => 'sometimes',
-            'cart_uuid' => 'sometimes',
         ];
     }
 }

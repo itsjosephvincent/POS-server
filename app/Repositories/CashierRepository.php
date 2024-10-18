@@ -24,7 +24,11 @@ class CashierRepository implements CashierRepositoryInterface
 
     public function findByUuid(string $uuid)
     {
-        return Cashier::where('uuid', $uuid)->first();
+        return Cashier::with([
+            'carts',
+        ])
+            ->where('uuid', $uuid)
+            ->first();
     }
 
     public function create(object $payload)

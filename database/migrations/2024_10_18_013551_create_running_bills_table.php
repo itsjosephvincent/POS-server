@@ -20,6 +20,9 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->boolean('is_voided')->default(false);
             $table->timestamps();
+
+            $table->foreign('table_id')->references('id')->on('tables')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

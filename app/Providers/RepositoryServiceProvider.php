@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Interfaces\Repositories\AdminRepositoryInterface;
+use App\Interfaces\Repositories\CartRepositoryInterface;
 use App\Interfaces\Repositories\CashierRepositoryInterface;
 use App\Interfaces\Repositories\CategoryRepositoryInterface;
 use App\Interfaces\Repositories\OrderDetailRepositoryInterface;
@@ -15,14 +16,15 @@ use App\Interfaces\Repositories\SuperadminRepositoryInterface;
 use App\Interfaces\Repositories\TableRepositoryInterface;
 use App\Interfaces\Services\AdminServiceInterface;
 use App\Interfaces\Services\AuthServiceInterface;
+use App\Interfaces\Services\CartServiceInterface;
 use App\Interfaces\Services\CashierServiceInterface;
 use App\Interfaces\Services\CategoryServiceInterface;
-use App\Interfaces\Services\OrderDetailServiceInterface;
 use App\Interfaces\Services\OrderServiceInterface;
 use App\Interfaces\Services\ProductServiceInterface;
 use App\Interfaces\Services\RunningBillServiceInterface;
 use App\Interfaces\Services\StoreServiceInterface;
 use App\Repositories\AdminRepository;
+use App\Repositories\CartRepository;
 use App\Repositories\CashierRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\OrderDetailRepository;
@@ -35,9 +37,9 @@ use App\Repositories\SuperadminRepository;
 use App\Repositories\TableRepository;
 use App\Services\AdminService;
 use App\Services\AuthService;
+use App\Services\CartService;
 use App\Services\CashierService;
 use App\Services\CategoryService;
-use App\Services\OrderDetailService;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\RunningBillService;
@@ -63,6 +65,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RunningBillRepositoryInterface::class, RunningBillRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(OrderDetailRepositoryInterface::class, OrderDetailRepository::class);
+        $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
 
         //Services
         $this->app->bind(AdminServiceInterface::class, AdminService::class);
@@ -73,7 +76,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(RunningBillServiceInterface::class, RunningBillService::class);
         $this->app->bind(OrderServiceInterface::class, OrderService::class);
-        $this->app->bind(OrderDetailServiceInterface::class, OrderDetailService::class);
+        $this->app->bind(CartServiceInterface::class, CartService::class);
     }
 
     /**

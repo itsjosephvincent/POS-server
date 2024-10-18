@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Http\Resources\OrderResource;
+use App\Interfaces\Repositories\CartRepositoryInterface;
+use App\Interfaces\Repositories\CashierRepositoryInterface;
 use App\Interfaces\Repositories\OrderDetailRepositoryInterface;
 use App\Interfaces\Repositories\OrderRepositoryInterface;
 use App\Interfaces\Repositories\RunningBillRepositoryInterface;
@@ -10,6 +12,7 @@ use App\Interfaces\Repositories\TableRepositoryInterface;
 use App\Interfaces\Services\OrderServiceInterface;
 use App\Traits\SortingTraits;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService implements OrderServiceInterface
@@ -24,16 +27,24 @@ class OrderService implements OrderServiceInterface
 
     private $runningBillRepository;
 
+    private $cashierRepository;
+
+    private $cartRepository;
+
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         TableRepositoryInterface $tableRepository,
         OrderDetailRepositoryInterface $orderDetailRepository,
-        RunningBillRepositoryInterface $runningBillRepository
+        RunningBillRepositoryInterface $runningBillRepository,
+        CashierRepositoryInterface $cashierRepository,
+        CartRepositoryInterface $cartRepository
     ) {
         $this->orderRepository = $orderRepository;
         $this->tableRepository = $tableRepository;
         $this->orderDetailRepository = $orderDetailRepository;
         $this->runningBillRepository = $runningBillRepository;
+        $this->cashierRepository = $cashierRepository;
+        $this->cartRepository = $cartRepository;
     }
 
     public function findOrders(object $payload)
@@ -57,6 +68,9 @@ class OrderService implements OrderServiceInterface
     {
         try {
             DB::beginTransaction();
+
+            $user = Auth::user();
+
             $order = $this->orderRepository->create();
 
             if ($payload->table_uuid) {
@@ -78,9 +92,25 @@ class OrderService implements OrderServiceInterface
 
                     $this->runningBillRepository->delete($table->id);
                 }
-            }
+            } else {
+                $cashier = $this->cashierRepository->findByUuid($user->uuid);
 
-            if ($payload->cart_uuid) {
+                if ($cashier && $cashier->carts->isNotEmpty()) {
+                    foreach ($cashier->carts as $cart) {
+                        if (! $cart->is_voided) {
+                            $orderDetailsPayload = (object) [
+                                'order_id' => $order->id,
+                                'product_id' => $cart->product_id,
+                                'quantity' => $cart->quantity,
+                                'price' => $cart->price,
+                            ];
+
+                            $this->orderDetailRepository->create($orderDetailsPayload);
+                        }
+                    }
+
+                    $this->cartRepository->delete($cashier->id);
+                }
             }
 
             $order = $this->orderRepository->findByUuid($order->uuid);
