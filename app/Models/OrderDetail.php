@@ -7,25 +7,26 @@ use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Table extends Model
+class OrderDetail extends Model
 {
     use Filterable, HasFactory, UsesUuid;
 
     protected $fillable = [
         'uuid',
-        'store_id',
-        'name',
+        'order_id',
+        'product_id',
+        'quantity',
+        'price',
     ];
 
-    public function store(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Order::class);
     }
 
-    public function runningBills(): HasMany
+    public function product(): BelongsTo
     {
-        return $this->hasMany(RunningBill::class);
+        return $this->belongsTo(Product::class);
     }
 }

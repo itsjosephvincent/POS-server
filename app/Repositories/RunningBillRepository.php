@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\Repositories\RunningBillRepositoryInterface;
 use App\Models\RunningBill;
+use Illuminate\Http\Response;
 
 class RunningBillRepository implements RunningBillRepositoryInterface
 {
@@ -47,5 +48,14 @@ class RunningBillRepository implements RunningBillRepositoryInterface
         $bill->save();
 
         return $bill->fresh();
+    }
+
+    public function delete(int $tableId)
+    {
+        RunningBill::where('table_id', $tableId)->delete();
+
+        return response()->json([
+            'message' => trans('exception.success.message'),
+        ], Response::HTTP_OK);
     }
 }

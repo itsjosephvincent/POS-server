@@ -19,7 +19,11 @@ class TableRepository implements TableRepositoryInterface
 
     public function findByUuid(string $uuid)
     {
-        return Table::where('uuid', $uuid)->first();
+        return Table::with([
+            'runningBills',
+        ])
+            ->where('uuid', $uuid)
+            ->first();
     }
 
     public function create(object $payload)
