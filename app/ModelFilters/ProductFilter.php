@@ -25,4 +25,11 @@ class ProductFilter extends ModelFilter
             $query->where('uuid', $category);
         });
     }
+
+    public function admin($admin)
+    {
+        return $this->whereHas('category.admin', function ($query) use ($admin) {
+            $query->where('uuid', $admin);
+        });
+    }
 }
