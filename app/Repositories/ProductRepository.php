@@ -23,6 +23,11 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::where('uuid', $uuid)->first();
     }
 
+    public function findById(int $id)
+    {
+        return Product::findOrFail($id);
+    }
+
     public function create(object $payload)
     {
         $product = new Product;
@@ -40,10 +45,19 @@ class ProductRepository implements ProductRepositoryInterface
     public function update(object $payload, string $uuid)
     {
         $product = Product::where('uuid', $uuid)->first();
-        $product->name = $payload->name;
-        $product->image = $payload->image ?? null;
-        $product->cost = $payload->cost;
-        $product->price = $payload->price;
+        $product->name = $payload->name ?? $product->name;
+        $product->image = $payload->image ? $payload->image : $product->image;
+        $product->cost = $payload->cost ?? $product->cost;
+        $product->price = $payload->price ?? $product->price;
+        $product->inventory = $payload->inventory ?? $product->inventory;
+        $product->save();
+
+        return $product->fresh();
+    }
+
+    public function updateInventory(object $payload, int $id)
+    {
+        $product = Product::findOrFail($id);
         $product->inventory = $payload->inventory;
         $product->save();
 

@@ -73,7 +73,7 @@ class CartService implements CartServiceInterface
             'inventory' => $product->inventory - $payload->quantity,
         ];
 
-        $this->productRepository->update($inventoryUpdatePayload, $product->uuid);
+        $this->productRepository->updateInventory($inventoryUpdatePayload, $cart->product_id);
 
         return new CartResource($cart);
     }
@@ -90,8 +90,16 @@ class CartService implements CartServiceInterface
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $bill = $this->cartRepository->void($uuid);
+        $cart = $this->cartRepository->void($uuid);
 
-        return new CartResource($bill);
+        $product = $this->productRepository->findById($cart->product_id);
+
+        $inventoryUpdatePayload = (object) [
+            'inventory' => $product->inventory + $cart->quantity,
+        ];
+
+        $this->productRepository->updateInventory($inventoryUpdatePayload, $cart->product_id);
+
+        return new CartResource($cart);
     }
 }
