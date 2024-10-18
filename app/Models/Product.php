@@ -34,4 +34,11 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function admin($admin)
+    {
+        return $this->whereHas('category.admin', function ($query) use ($admin) {
+            $query->where('uuid', $admin);
+        });
+    }
 }

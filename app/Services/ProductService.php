@@ -8,6 +8,7 @@ use App\Imports\ProductsImport;
 use App\Interfaces\Repositories\CategoryRepositoryInterface;
 use App\Interfaces\Repositories\ProductRepositoryInterface;
 use App\Interfaces\Repositories\SpatieRepositoryInterface;
+use App\Interfaces\Repositories\StoreRepositoryInterface;
 use App\Interfaces\Services\ProductServiceInterface;
 use App\Traits\SortingTraits;
 use Exception;
@@ -24,14 +25,18 @@ class ProductService implements ProductServiceInterface
 
     private $spatieRepository;
 
+    private $storeRepository;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
-        SpatieRepositoryInterface $spatieRepository
+        SpatieRepositoryInterface $spatieRepository,
+        StoreRepositoryInterface $storeRepository
     ) {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->spatieRepository = $spatieRepository;
+        $this->storeRepository = $storeRepository;
     }
 
     public function findProducts(object $payload)
