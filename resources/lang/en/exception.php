@@ -16,4 +16,7 @@ return [
     'transaction_failed' => [
         'message' => 'An error occurred while processing the import. Please try again or contact support if the issue persists.',
     ],
+    'not_enough_inventory' => [
+        'message' => "Product doesn't have enough stocks.",
+    ],
 ];
