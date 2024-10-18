@@ -17,13 +17,13 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
-            'category' => $this->category,
             'name' => $this->name,
             'image' => $this->image,
             'cost' => $this->cost,
             'price' => $this->price,
             'inventory' => $this->inventory,
             'created_at' => $this->created_at,
+            'category' => new CategoryResource($this->whenLoaded('category')),
         ];
     }
 }

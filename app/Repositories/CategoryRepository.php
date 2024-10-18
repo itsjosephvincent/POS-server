@@ -9,15 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
-    public function findMany()
+    public function findMany(int $adminId)
     {
-        $user = Auth::user();
-
         return Category::with([
             'admin',
             'products',
         ])
-            ->where('admin_id', $user->id)
+            ->where('admin_id', $adminId)
             ->get();
     }
 

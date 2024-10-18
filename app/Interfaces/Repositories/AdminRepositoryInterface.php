@@ -8,6 +8,8 @@ interface AdminRepositoryInterface
 
     public function findByUsername(string $username);
 
+    public function findById(int $id);
+
     public function findByUuid(string $uuid);
 
     public function create(object $payload);

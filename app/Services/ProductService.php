@@ -39,11 +39,6 @@ class ProductService implements ProductServiceInterface
         $sortField = $this->sortField($payload, 'id');
         $sortOrder = $this->sortOrder($payload, 'asc');
 
-        if ($payload->category_uuid) {
-            $category = $this->categoryRepository->findByUuid($payload->category_uuid);
-            $payload->category_id = $category->id;
-        }
-
         $products = $this->productRepository->findMany($payload, $sortField, $sortOrder);
 
         return ProductResource::collection($products);

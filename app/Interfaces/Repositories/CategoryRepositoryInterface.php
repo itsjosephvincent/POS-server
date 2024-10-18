@@ -4,7 +4,7 @@ namespace App\Interfaces\Repositories;
 
 interface CategoryRepositoryInterface
 {
-    public function findMany();
+    public function findMany(int $adminId);
 
     public function findByUuid(string $uuid);
 

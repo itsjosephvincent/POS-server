@@ -26,6 +26,11 @@ class AdminRepository implements AdminRepositoryInterface
         return Admin::where('uuid', $uuid)->first();
     }
 
+    public function findById(int $id)
+    {
+        return Admin::findOrFail($id);
+    }
+
     public function create(object $payload)
     {
         $admin = new Admin;

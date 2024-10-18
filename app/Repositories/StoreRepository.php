@@ -27,6 +27,11 @@ class StoreRepository implements StoreRepositoryInterface
         return Store::where('uuid', $uuid)->first();
     }
 
+    public function findById(int $id)
+    {
+        return Store::findOrFail($id);
+    }
+
     public function create(object $payload)
     {
         $store = new Store;

@@ -10,6 +10,8 @@ interface StoreRepositoryInterface
 
     public function findByUuid(string $uuid);
 
+    public function findById(int $id);
+
     public function create(object $payload);
 
     public function update(object $payload, string $uuid);
