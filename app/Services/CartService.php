@@ -56,7 +56,7 @@ class CartService implements CartServiceInterface
 
     public function createCart(object $payload)
     {
-        $cashier = $this->cashierRepository->findByUuid($payload->cashier_uuid);
+        $cashier = Auth::user();
         $product = $this->productRepository->findByUuid($payload->product_uuid);
 
         if ($product->inventory < $payload->quantity) {

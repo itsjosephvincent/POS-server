@@ -22,7 +22,6 @@ class CartStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cashier_uuid' => 'required',
             'product_uuid' => 'required',
             'quantity' => ['required', 'numeric'],
         ];
