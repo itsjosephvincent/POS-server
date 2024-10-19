@@ -23,6 +23,7 @@ use App\Interfaces\Services\OrderServiceInterface;
 use App\Interfaces\Services\ProductServiceInterface;
 use App\Interfaces\Services\RunningBillServiceInterface;
 use App\Interfaces\Services\StoreServiceInterface;
+use App\Interfaces\Services\TableServiceInterface;
 use App\Repositories\AdminRepository;
 use App\Repositories\CartRepository;
 use App\Repositories\CashierRepository;
@@ -44,6 +45,7 @@ use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\RunningBillService;
 use App\Services\StoreService;
+use App\Services\TableService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -77,6 +79,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RunningBillServiceInterface::class, RunningBillService::class);
         $this->app->bind(OrderServiceInterface::class, OrderService::class);
         $this->app->bind(CartServiceInterface::class, CartService::class);
+        $this->app->bind(TableServiceInterface::class, TableService::class);
     }
 
     /**

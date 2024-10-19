@@ -73,7 +73,7 @@ class RunningBillService implements RunningBillServiceInterface
             'inventory' => $product->inventory - $payload->quantity,
         ];
 
-        $this->productRepository->updateInventory($inventoryUpdatePayload, $product->bill_product_id);
+        $this->productRepository->updateInventory($inventoryUpdatePayload, $product->id);
 
         return new RunningBillResource($bill);
     }
