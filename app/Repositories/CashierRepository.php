@@ -19,7 +19,12 @@ class CashierRepository implements CashierRepositoryInterface
 
     public function findByUsername(string $username)
     {
-        return Cashier::where('username', $username)->first();
+        return Cashier::with([
+            'store',
+            'store.admin',
+        ])
+            ->where('username', $username)
+            ->first();
     }
 
     public function findByUuid(string $uuid)

@@ -20,9 +20,9 @@ class CashierResource extends JsonResource
             'store_id' => $this->store_id,
             'name' => $this->name,
             'username' => $this->username,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at,
             'store' => new StoreResource($this->whenLoaded('store')),
-            'is_active' => $this->is_active,
         ];
     }
 }

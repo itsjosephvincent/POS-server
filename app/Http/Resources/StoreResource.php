@@ -21,10 +21,10 @@ class StoreResource extends JsonResource
             'store_name' => $this->store_name,
             'branch' => $this->branch,
             'username' => $this->username,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at,
             'admin' => new AdminResource($this->whenLoaded('admin')),
             'cashiers' => CashierResource::collection($this->whenLoaded('cashiers')),
-            'is_active' => $this->is_active,
         ];
     }
 }

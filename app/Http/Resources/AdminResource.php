@@ -20,9 +20,9 @@ class AdminResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'username' => $this->username,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at,
             'stores' => StoreResource::collection($this->whenLoaded('stores')),
-            'is_active' => $this->is_active,
         ];
     }
 }
