@@ -13,8 +13,8 @@ class RunningBillRepository implements RunningBillRepositoryInterface
         return RunningBill::with([
             'table',
             'product',
-        ])->where('table_id', $payload->table_id)
-            // ->filter($payload->all())
+        ])
+            ->filter($payload->all())
             ->orderBy($sortField, $sortOrder)
             ->get();
     }
