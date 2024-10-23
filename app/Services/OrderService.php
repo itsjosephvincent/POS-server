@@ -71,7 +71,7 @@ class OrderService implements OrderServiceInterface
 
             $user = Auth::user();
 
-            $order = $this->orderRepository->create();
+            $order = $this->orderRepository->create($payload);
 
             if ($payload->table_uuid) {
                 $table = $this->tableRepository->findByUuid($payload->table_uuid);

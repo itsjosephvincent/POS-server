@@ -40,12 +40,13 @@ class OrderRepository implements OrderRepositoryInterface
             ->first();
     }
 
-    public function create()
+    public function create(object $payload)
     {
         $user = Auth::user();
 
         $order = new Order;
         $order->cashier_id = $user->id;
+        $order->payment = $payload->payment;
         $order->save();
 
         return $order->fresh();

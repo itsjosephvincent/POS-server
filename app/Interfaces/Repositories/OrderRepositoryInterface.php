@@ -8,5 +8,5 @@ interface OrderRepositoryInterface
 
     public function findByUuid(string $uuid);
 
-    public function create();
+    public function create(object $payload);
 }

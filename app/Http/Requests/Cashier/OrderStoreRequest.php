@@ -23,6 +23,7 @@ class OrderStoreRequest extends FormRequest
     {
         return [
             'table_uuid' => 'sometimes',
+            'payment' => 'required',
         ];
     }
 }

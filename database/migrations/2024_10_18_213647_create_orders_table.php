@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->unsignedBigInteger('cashier_id');
+            $table->decimal('payment', 8, 2);
             $table->string('order_number');
             $table->timestamps();
 
