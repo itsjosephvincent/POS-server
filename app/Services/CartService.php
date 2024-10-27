@@ -65,7 +65,7 @@ class CartService implements CartServiceInterface
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $payload->table_id = $cashier->id;
+        $payload->cashier_id = $cashier->id;
         $payload->product_id = $product->id;
         $cart = $this->cartRepository->create($payload);
 
