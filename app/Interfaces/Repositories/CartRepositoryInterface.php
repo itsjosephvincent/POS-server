@@ -10,7 +10,7 @@ interface CartRepositoryInterface
 
     public function create(object $payload);
 
-    public function void(string $uuid);
+    public function delete(string $uuid);
 
-    public function delete(int $cashierId);
+    public function deleteAll(int $cashierId);
 }

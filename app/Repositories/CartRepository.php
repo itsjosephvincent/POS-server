@@ -41,16 +41,17 @@ class CartRepository implements CartRepositoryInterface
         return $bill->fresh();
     }
 
-    public function void(string $uuid)
+    public function delete(string $uuid)
     {
         $bill = Cart::where('uuid', $uuid)->first();
-        $bill->is_voided = true;
-        $bill->save();
+        $bill->delete();
 
-        return $bill->fresh();
+        return response()->json([
+            'message' => trans('exception.success.message'),
+        ], Response::HTTP_OK);
     }
 
-    public function delete(int $cashierId)
+    public function deleteAll(int $cashierId)
     {
         Cart::where('cashier_id', $cashierId)->delete();
 

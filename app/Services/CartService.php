@@ -90,7 +90,7 @@ class CartService implements CartServiceInterface
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $cart = $this->cartRepository->void($uuid);
+        $cart = $this->cartRepository->findByUuid($uuid);
 
         $product = $this->productRepository->findById($cart->product_id);
 
@@ -100,6 +100,6 @@ class CartService implements CartServiceInterface
 
         $this->productRepository->updateInventory($inventoryUpdatePayload, $cart->product_id);
 
-        return new CartResource($cart);
+        return $this->cartRepository->delete($uuid);
     }
 }

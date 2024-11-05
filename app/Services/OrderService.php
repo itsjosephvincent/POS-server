@@ -109,7 +109,7 @@ class OrderService implements OrderServiceInterface
                         }
                     }
 
-                    $this->cartRepository->delete($cashier->id);
+                    $this->cartRepository->deleteAll($cashier->id);
                 }
             }
 

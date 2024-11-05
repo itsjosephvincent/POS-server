@@ -32,7 +32,7 @@ class CartController extends Controller
         return $this->cartService->findCart($uuid);
     }
 
-    public function update(CartVoidRequest $request, string $uuid)
+    public function destroy(CartVoidRequest $request, string $uuid)
     {
         return $this->cartService->voidCart($request, $uuid);
     }
