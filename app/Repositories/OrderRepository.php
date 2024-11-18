@@ -19,10 +19,10 @@ class OrderRepository implements OrderRepositoryInterface
             ->filter($payload->all())
             ->orderBy($sortField, $sortOrder);
 
-        if ($user->getRoleNames()[0] === 'Usher') {
+        if ($user->getRoleNames()[0] === 'cashier') {
             $query->where('cashier_id', $user->id);
         } else {
-            $query->whereIn('cashier_id', $payload->cashier_id);
+            $query->where('cashier_id', $payload->cashier_id);
         }
 
         $orders = $query->paginate(config('paginate.page'));
@@ -34,7 +34,7 @@ class OrderRepository implements OrderRepositoryInterface
     {
         return Order::with([
             'cashier',
-            'orderDetails',
+            'orderDetails.product',
         ])
             ->where('uuid', $uuid)
             ->first();
