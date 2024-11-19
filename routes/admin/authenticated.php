@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\AuthController;
 use App\Http\Controllers\Api\Admin\CashierController;
 use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\OrderController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\StoreController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ Route::middleware('auth:sanctum')->group(function () {
         'categories' => CategoryController::class,
         'products' => ProductController::class,
         'stores' => StoreController::class,
+        'orders' => OrderController::class,
     ]);
 
     Route::prefix('products')->group(function () {
