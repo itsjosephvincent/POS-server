@@ -20,7 +20,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function findByUuid(string $uuid)
     {
-        return Product::where('uuid', $uuid)->first();
+        return Product::with(['category'])->where('uuid', $uuid)->first();
     }
 
     public function findById(int $id)
