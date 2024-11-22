@@ -14,16 +14,17 @@ class OrdersReportService implements OrdersReportServiceInterface
 
     public function __construct(
         OrdersReportRepositoryInterface $ordersReportRepository,
-    )
-    {
+    ) {
         $this->ordersReportRepository = $ordersReportRepository;
     }
+
     public function findMany(object $payload)
     {
         $sortField = $this->sortField($payload, 'created_at');
         $sortOrder = $this->sortOrder($payload, 'desc');
 
         $orders = $this->ordersReportRepository->findMany($payload, $sortField, $sortOrder);
+
         return $orders;
     }
 }

@@ -13,6 +13,9 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::with([
             'category',
         ])
+            ->whereHas('category', function ($query) use ($payload) {
+                $query->where('admin_id', $payload->admin_id);
+            })
             ->filter($payload->all())
             ->orderBy($sortField, $sortOrder)
             ->paginate(config('paginate.page'));

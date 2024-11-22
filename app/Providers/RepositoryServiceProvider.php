@@ -45,11 +45,11 @@ use App\Services\CartService;
 use App\Services\CashierService;
 use App\Services\CategoryService;
 use App\Services\OrderService;
+use App\Services\OrdersReportService;
 use App\Services\ProductService;
 use App\Services\RunningBillService;
 use App\Services\StoreService;
 use App\Services\TableService;
-use App\Services\OrdersReportService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

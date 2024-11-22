@@ -13,6 +13,7 @@ use App\Interfaces\Services\ProductServiceInterface;
 use App\Traits\SortingTraits;
 use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductService implements ProductServiceInterface
@@ -43,6 +44,17 @@ class ProductService implements ProductServiceInterface
     {
         $sortField = $this->sortField($payload, 'id');
         $sortOrder = $this->sortOrder($payload, 'asc');
+
+        $user = Auth::user();
+
+        if ($user->getRoleNames()[0] === 'admin') {
+            $payload->admin_id = $user->id;
+        } elseif ($user->getRoleNames()[0] === 'store') {
+            $payload->admin_id = $user->admin_id;
+        } elseif ($user->getRoleNames()[0] === 'cashier') {
+            $store = $this->storeRepository->findById($user->store_id);
+            $payload->admin_id = $store->admin_id;
+        }
 
         $products = $this->productRepository->findMany($payload, $sortField, $sortOrder);
 

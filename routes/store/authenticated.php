@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\Store\AuthController;
 use App\Http\Controllers\Api\Store\CashierController;
-use App\Http\Controllers\Api\Store\TableController;
 use App\Http\Controllers\Api\Store\ReportController;
+use App\Http\Controllers\Api\Store\TableController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
