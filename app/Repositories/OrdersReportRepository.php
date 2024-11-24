@@ -12,6 +12,9 @@ class OrdersReportRepository implements OrdersReportRepositoryInterface
     {
         $user = Auth::user();
         $admin_id = $user->id;
+        if ($user->getRoleNames()[0] === 'store') {
+            $admin_id = $user->admin_id;
+        }
 
         $orders = Order::select('orders.*', 'stores.uuid as store_uuid', 'stores.store_name as store_name', 'stores.branch as branch', 'cashiers.name as cashier_name')
         ->join('cashiers', 'orders.cashier_id', '=', 'cashiers.id')
