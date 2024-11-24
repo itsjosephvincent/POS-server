@@ -38,10 +38,9 @@ class CategoryService implements CategoryServiceInterface
             $adminId = $user->id;
         } elseif ($user->getRoleNames()[0] === 'store') {
             $adminId = $user->admin_id;
-        } else {
+        } elseif ($user->getRoleNames()[0] === 'cashier') {
             $store = $this->storeRepository->findById($user->store_id);
-            $admin = $this->adminRepository->findById($store->admin_id);
-            $adminId = $admin->id;
+            $adminId = $store->admin_id;
         }
 
         $categories = $this->categoryRepository->findMany($adminId);

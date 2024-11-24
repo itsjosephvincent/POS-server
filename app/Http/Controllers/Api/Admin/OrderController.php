@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     private $ordersReportService;
+
     private $orderService;
 
     public function __construct(
         OrdersReportServiceInterface $ordersReportService,
         OrderService $orderService,
-    )
-    {
+    ) {
         $this->ordersReportService = $ordersReportService;
         $this->orderService = $orderService;
     }
