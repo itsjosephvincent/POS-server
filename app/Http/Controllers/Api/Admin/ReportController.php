@@ -5,31 +5,34 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     public function summary(Request $request)
     {
         try {
+            $user = Auth::user();
+            $admin_id = $user->id;
             $bindings = [];
+            $bindings['admin_id'] = $admin_id;
             $query = 'SELECT COALESCE(SUM(C.price), 0.00) as total_payments, COALESCE(SUM(C.cost), 0.00) as total_cost, COALESCE(SUM(C.price) - SUM(C.cost), 0.00) as total_earnings
             FROM orders as A
             LEFT JOIN order_details as B ON A.id=B.order_id LEFT JOIN products as C ON B.product_id=C.id LEFT JOIN cashiers as D ON A.cashier_id=D.id LEFT JOIN stores as E ON D.store_id=E.id
-            
+            WHERE E.admin_id = :admin_id
             ';
 
             if ($request->date || $request->store) {
-                $query .= ' WHERE ';
+                $query .= ' AND ';
             }
-
             if ($request->date) {
-                $date = $request->date;
-                $start_date = "$date 00:00:00";
-                $end_date = "$date 23:59:59";
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
                 $bindings['start_date'] = $start_date;
                 $bindings['end_date'] = $end_date;
 
-                $query .= ' A.created_at between :start_date and :end_date';
+                $query .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date and :end_date ';
             }
 
             if ($request->store) {
@@ -58,24 +61,28 @@ class ReportController extends Controller
     public function popular_items(Request $request)
     {
         try {
+            $user = Auth::user();
+            $admin_id = $user->id;
             $bindings = [];
+            $bindings['admin_id'] = $admin_id;
             $query = 'SELECT E.uuid, C.id as product_id, C.name as product_name, B.price, C.cost, SUM(B.quantity)as quantity, SUM(B.price * B.quantity) as sold, SUM(B.price * B.quantity) - SUM(C.cost * B.quantity) as earnings
             FROM orders as A
             LEFT JOIN order_details as B ON A.id=B.order_id LEFT JOIN products as C ON B.product_id=C.id LEFT JOIN cashiers as D ON A.cashier_id=D.id LEFT JOIN stores as E ON D.store_id=E.id
+            WHERE E.admin_id = :admin_id
             ';
 
             if ($request->date || $request->store) {
-                $query .= ' WHERE ';
+                $query .= ' AND ';
             }
 
             if ($request->date) {
-                $date = $request->date;
-                $start_date = "$date 00:00:00";
-                $end_date = "$date 23:59:59";
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
                 $bindings['start_date'] = $start_date;
                 $bindings['end_date'] = $end_date;
 
-                $query .= ' A.created_at between :start_date and :end_date ';
+                $query .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date and :end_date ';
             }
             if ($request->store) {
                 $store = $request->store;
@@ -104,24 +111,28 @@ class ReportController extends Controller
     public function category_earnings(Request $request)
     {
         try {
+            $user = Auth::user();
+            $admin_id = $user->id;
             $bindings = [];
+            $bindings['admin_id'] = $admin_id;
             $query = 'SELECT C.category_id, D.name, SUM(B.quantity) as total_quantity, SUM(C.cost * B.quantity) as total_cost, SUM(B.price * B.quantity) as sold, SUM(B.price * B.quantity) - SUM(C.cost * B.quantity) as earnings
             FROM orders as A
             LEFT JOIN order_details as B ON A.id=B.order_id LEFT JOIN products as C ON B.product_id=C.id
             LEFT JOIN categories as D ON D.id=C.category_id LEFT JOIN cashiers as E ON A.cashier_id=E.id LEFT JOIN stores as F ON E.store_id=F.id
+            WHERE F.admin_id = :admin_id
             ';
 
             if ($request->date || $request->store) {
-                $query .= ' WHERE ';
+                $query .= ' AND ';
             }
             if ($request->date) {
-                $date = $request->date;
-                $start_date = "$date 00:00:00";
-                $end_date = "$date 23:59:59";
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
                 $bindings['start_date'] = $start_date;
                 $bindings['end_date'] = $end_date;
 
-                $query .= ' A.created_at between :start_date and :end_date ';
+                $query .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date and :end_date ';
             }
             if ($request->store) {
                 $store = $request->store;
@@ -150,23 +161,27 @@ class ReportController extends Controller
     public function store_earnings(Request $request)
     {
         try {
+            $user = Auth::user();
+            $admin_id = $user->id;
             $bindings = [];
+            $bindings['admin_id'] = $admin_id;
             $query = 'SELECT E.uuid, E.store_name, E.branch, SUM(B.quantity)as quantity, SUM(B.price * B.quantity) as sold, SUM(B.price * B.quantity) - SUM(C.cost * B.quantity) as earnings
             FROM orders as A
             LEFT JOIN order_details as B ON A.id=B.order_id LEFT JOIN products as C ON B.product_id=C.id LEFT JOIN cashiers as D ON A.cashier_id=D.id LEFT JOIN stores as E ON D.store_id=E.id
+            WHERE E.admin_id = :admin_id
             ';
 
             if ($request->date) {
-                $query .= ' WHERE ';
+                $query .= ' AND ';
             }
             if ($request->date) {
-                $date = $request->date;
-                $start_date = "$date 00:00:00";
-                $end_date = "$date 23:59:59";
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
                 $bindings['start_date'] = $start_date;
                 $bindings['end_date'] = $end_date;
 
-                $query .= ' A.created_at between :start_date and :end_date ';
+                $query .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date and :end_date ';
             }
             $query .= ' GROUP BY E.uuid, E.store_name, E.branch';
 

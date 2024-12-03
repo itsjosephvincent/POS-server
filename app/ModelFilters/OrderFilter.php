@@ -19,10 +19,10 @@ class OrderFilter extends ModelFilter
         return $this->where('order_number', $number);
     }
 
-    public function date($date)
-    {
-        return $this->whereDate('orders.created_at', $date);
-    }
+    // public function date($date)
+    // {
+    //     return $this->whereDate('orders.created_at', $date);
+    // }
 
     public function store($store_uuid)
     {
