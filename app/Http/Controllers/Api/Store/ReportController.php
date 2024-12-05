@@ -323,4 +323,158 @@ class ReportController extends Controller
             ], status: 400);
         }
     }
+
+    public function item_sales_daily(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $store_id = $user->id;
+            $bindings = [];
+            $bindings['store_id'] = $store_id;
+            $query = DB::table('orders AS A')
+            ->join('order_details AS B', 'A.id', '=', 'B.order_id')
+            ->join('products AS C', 'B.product_id', '=', 'C.id')
+            ->join('cashiers AS D', 'A.cashier_id', '=', 'D.id')
+            ->join('stores AS E', 'D.store_id', '=', 'E.id')
+            ->selectRaw('
+                C.id,
+                C.name,
+                DATE(B.created_at) as report_date,
+                SUM(B.quantity) AS items_sold,
+                SUM(B.price * B.quantity) AS net_sales,
+                SUM(C.cost * B.quantity) AS cogs,
+                SUM(B.price * B.quantity) - SUM(C.cost * B.quantity) AS gross_profit
+            ');
+
+            $where = ' E.id = :store_id ';
+            if ($request->date) {
+                $where .= ' AND ';
+            }
+            if ($request->date) {
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
+                $bindings['start_date'] = $start_date;
+                $bindings['end_date'] = $end_date;
+
+                $where .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date AND :end_date ';
+            }
+
+            $results = $query->whereRaw($where, $bindings)
+            ->groupBy(['report_date', 'C.id', 'C.name'])
+            ->orderBy('report_date', 'ASC')
+            ->paginate(config('paginate.page'));
+
+            return response()->json($results, 200);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'is_error' => true,
+                'message' => 'Error fetching report summary',
+                'error' => $exception->getMessage(),
+            ], status: 400);
+        }
+    }
+
+    public function cashier_sales_daily(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $store_id = $user->id;
+            $bindings = [];
+            $bindings['store_id'] = $store_id;
+            $query = DB::table('orders AS A')
+            ->join('order_details AS B', 'A.id', '=', 'B.order_id')
+            ->join('products AS C', 'B.product_id', '=', 'C.id')
+            ->join('cashiers AS D', 'A.cashier_id', '=', 'D.id')
+            ->join('stores AS E', 'D.store_id', '=', 'E.id')
+            ->selectRaw('
+                D.id,
+                D.name,
+                DATE(B.created_at) as report_date,
+                SUM(B.quantity) AS items_sold,
+                SUM(B.price * B.quantity) AS net_sales,
+                SUM(C.cost * B.quantity) AS cogs,
+                SUM(B.price * B.quantity) - SUM(C.cost * B.quantity) AS gross_profit
+            ');
+
+            $where = ' E.id = :store_id ';
+            if ($request->date) {
+                $where .= ' AND ';
+            }
+            if ($request->date) {
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
+                $bindings['start_date'] = $start_date;
+                $bindings['end_date'] = $end_date;
+
+                $where .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date AND :end_date ';
+            }
+
+            $results = $query->whereRaw($where, $bindings)
+            ->groupBy(['report_date', 'D.id', 'D.name'])
+            ->orderBy('report_date', 'ASC')
+            ->paginate(config('paginate.page'));
+
+            return response()->json($results, 200);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'is_error' => true,
+                'message' => 'Error fetching report summary',
+                'error' => $exception->getMessage(),
+            ], status: 400);
+        }
+    }
+
+    public function category_sales_daily(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $store_id = $user->id;
+            $bindings = [];
+            $bindings['store_id'] = $store_id;
+            $query = DB::table('orders AS A')
+            ->join('order_details AS B', 'A.id', '=', 'B.order_id')
+            ->join('products AS C', 'B.product_id', '=', 'C.id')
+            ->join('cashiers AS D', 'A.cashier_id', '=', 'D.id')
+            ->join('stores AS E', 'D.store_id', '=', 'E.id')
+            ->join('categories AS F', 'C.category_id', '=', 'F.id')
+            ->selectRaw('
+                F.id,
+                F.name,
+                DATE(B.created_at) as report_date,
+                SUM(B.quantity) AS items_sold,
+                SUM(B.price * B.quantity) AS net_sales,
+                SUM(C.cost * B.quantity) AS cogs,
+                SUM(B.price * B.quantity) - SUM(C.cost * B.quantity) AS gross_profit
+            ');
+
+            $where = ' E.id = :store_id ';
+            if ($request->date) {
+                $where .= ' AND ';
+            }
+            if ($request->date) {
+                $date = explode(',', $request->date);
+                $start_date = $date[0];
+                $end_date = $date[1];
+                $bindings['start_date'] = $start_date;
+                $bindings['end_date'] = $end_date;
+
+                $where .= ' UNIX_TIMESTAMP(A.created_at) BETWEEN :start_date AND :end_date ';
+            }
+
+            $results = $query->whereRaw($where, $bindings)
+            ->groupBy(['report_date', 'F.id', 'F.name'])
+            ->orderBy('report_date', 'ASC')
+            ->paginate(config('paginate.page'));
+
+            return response()->json($results, 200);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'is_error' => true,
+                'message' => 'Error fetching report summary',
+                'error' => $exception->getMessage(),
+            ], status: 400);
+        }
+    }
 }
