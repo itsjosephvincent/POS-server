@@ -29,6 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/item_sales', [ReportController::class, 'item_sales']);
         Route::get('/cashier_sales', [ReportController::class, 'cashier_sales']);
         Route::get('/category_sales', [ReportController::class, 'category_sales']);
+        Route::get('/item_sales_daily', [ReportController::class, 'item_sales_daily']);
+        Route::get('/cashier_sales_daily', [ReportController::class, 'cashier_sales_daily']);
+        Route::get('/category_sales_daily', [ReportController::class, 'category_sales_daily']);
     });
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
