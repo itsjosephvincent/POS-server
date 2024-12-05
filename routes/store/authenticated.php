@@ -20,6 +20,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/popular_items', [ReportController::class, 'popular_items']);
         Route::get('/category_earnings', [ReportController::class, 'category_earnings']);
         Route::get('/store_earnings', [ReportController::class, 'store_earnings']);
+        Route::get('/item_sales', [ReportController::class, 'item_sales']);
+        Route::get('/cashier_sales', [ReportController::class, 'cashier_sales']);
+        Route::get('/category_sales', [ReportController::class, 'category_sales']);
     });
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
